@@ -1,65 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scheduler Dashboard | Mental Health Chatbot</title>
-    <style>
-        table {
-            width: 80%;
-            margin: auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-        th {
-            background: #f2f2f2;
-        }
-        .done {
-            color: green;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scheduler Dashboard | Mental Health Chatbot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #e0c4ce, #f3f9f9);
+    }
+
+    /* Bubbles background */
+    .bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.35;
+      animation: float 10s infinite ease-in-out;
+    }
+    .bubble:nth-child(1) { width: 180px; height: 180px; background: #98c4e9; top: 20%; left: 15%; animation-duration: 6s; }
+    .bubble:nth-child(2) { width: 220px; height: 220px; background: #d69bb2; top: 60%; left: 70%; animation-duration: 8s; }
+    .bubble:nth-child(3) { width: 140px; height: 140px; background: #a2d9da; top: 80%; left: 30%; animation-duration: 9s; }
+    .bubble:nth-child(4) { width: 250px; height: 250px; background: #d1d395; top: 35%; left: 80%; animation-duration: 8s; }
+    .bubble:nth-child(5) { width: 160px; height: 160px; background: #b4abeb; top: 10%; left: 50%; animation-duration: 10s; }
+    .bubble:nth-child(6) { width: 180px; height: 180px; background: #d18dcb; top: 45%; left: 5%; animation-duration: 5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-40px) scale(1.1); }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: flex-end;
+      z-index: 2;
+    }
+    .navbar a {
+      text-decoration: none;
+    }
+    .home-btn {
+      background: #4a90e2;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+    .home-btn:hover { background: #357abd; }
+
+    /* Card */
+    .scheduler-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem 3rem;
+      border-radius: 25px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+      z-index: 1;
+      width: 90%;
+      max-width: 1000px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    /* Buttons */
+    .btn {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      margin-bottom: 15px;
+    }
+    .btn:hover { background: #357abd; }
+
+    /* Table */
+    table {
+      width: 100%;
+      margin: auto;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+      font-size: 15px;
+    }
+    th {
+      background: #f2f2f2;
+      font-weight: bold;
+    }
+
+    /* Status */
+    .done {
+      color: green;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 15px;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
-    <h2 style="text-align:center;">Your Scheduled Tasks</h2>
+
+  <!-- Bubbles Background -->
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="{{ url_for('dashboard') }}"><div class="home-btn">🏠 Home</div></a>
+  </div>
+
+  <!-- Scheduler Card -->
+  <div class="scheduler-card">
+    <h2>Your Scheduled Tasks</h2>
+
     <form action="{{ url_for('add_schedule') }}" method="get">
-    <button class="btn" type="submit">Add Schedule</button>
+      <button class="btn" type="submit">➕ Add Schedule</button>
     </form>
+
     {% if schedules %}
     <table>
-        <thead>
-            <tr>
-                <th>Task</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for schedule in schedules %}
-            <tr>
-                <td>{{ schedule['task'] }}</td>
-                <td>{{ schedule['date'] }}</td>
-                <td>{{ schedule['time'] }}</td>
-                <td>
-                    {% if schedule['status'] == 'done' %}
-                        <span class="done">Completed</span>
-                    {% else %}
-                        <form action="{{ url_for('update_scheduler', schedule_id=schedule['_id']) }}" method="POST">
-                            <input type="checkbox" name="status" value="done" onchange="this.form.submit()">
-                        </form>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for schedule in schedules %}
+        <tr>
+          <td>{{ schedule['task'] }}</td>
+          <td>{{ schedule['date'] }}</td>
+          <td>{{ schedule['time'] }}</td>
+          <td>
+            {% if schedule['status'] == 'done' %}
+              <span class="done">Completed</span>
+            {% else %}
+              <form action="{{ url_for('update_scheduler', schedule_id=schedule['_id']) }}" method="POST">
+                <input type="checkbox" name="status" value="done" onchange="this.form.submit()">
+              </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
     {% else %}
-    <p style="text-align:center;">No schedules found.</p>
+    <p>No schedules found.</p>
     {% endif %}
+  </div>
 </body>
 </html>

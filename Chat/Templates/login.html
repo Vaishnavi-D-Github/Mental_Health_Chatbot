@@ -7,14 +7,15 @@
       margin: 0;
       font-family: 'Poppins', sans-serif;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       overflow: hidden;
       position: relative;
       background: linear-gradient(135deg, #e0c4ce, #f3f9f9);
+      text-align: center;
     }
-
 
     .bubbles {
       position: absolute;
@@ -33,48 +34,42 @@
       animation: float 20ms infinite ease-in-out;
     }
 
-   
-    .bubble:nth-child(1) {
-      width: 180px; height: 180px;
-      background: #98c4e9;
-      top: 20%; left: 15%;
-      animation-duration: 6s;
-    }
-    .bubble:nth-child(2) {
-      width: 220px; height: 220px;
-      background: #d69bb2;
-      top: 60%; left: 70%;
-      animation-duration: 8s;
-    }
-    .bubble:nth-child(3) {
-      width: 140px; height: 140px;
-      background: #a2d9da;
-      top: 80%; left: 30%;
-      animation-duration: 9s;
-    }
-    .bubble:nth-child(4) {
-      width: 250px; height: 250px;
-      background: #d1d395;
-      top: 35%; left: 80%;
-      animation-duration: 8s;
-    }
-    .bubble:nth-child(5) {
-      width: 160px; height: 160px;
-      background: #b4abeb;
-      top: 10%; left: 50%;
-      animation-duration: 10s;
-    }
-
-    .bubble:nth-child(6) {
-      width: 180px; height: 180px;
-      background: #d18dcb;
-      top: 45%; left: 5%;
-      animation-duration: 5s;
-    }
+    .bubble:nth-child(1) { width: 180px; height: 180px; background: #98c4e9; top: 20%; left: 15%; animation-duration: 6s; }
+    .bubble:nth-child(2) { width: 220px; height: 220px; background: #d69bb2; top: 60%; left: 70%; animation-duration: 8s; }
+    .bubble:nth-child(3) { width: 140px; height: 140px; background: #a2d9da; top: 80%; left: 30%; animation-duration: 9s; }
+    .bubble:nth-child(4) { width: 250px; height: 250px; background: #d1d395; top: 35%; left: 80%; animation-duration: 8s; }
+    .bubble:nth-child(5) { width: 160px; height: 160px; background: #b4abeb; top: 10%; left: 50%; animation-duration: 10s; }
+    .bubble:nth-child(6) { width: 180px; height: 180px; background: #d18dcb; top: 45%; left: 5%; animation-duration: 5s; }
 
     @keyframes float {
       0%, 100% { transform: translateY(0) scale(1); }
       50% { transform: translateY(-40px) scale(1.1); }
+    }
+
+    /* Welcome Section */
+    .welcome {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 20px;
+    }
+
+    .welcome h1 {
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .welcome p {
+      font-size: 1rem;
+      color: #555;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #444;
     }
 
     /* Login Card */
@@ -141,6 +136,13 @@
     <div class="bubble"></div>
   </div>
 
+  <!-- Welcome Section -->
+  <div class="welcome">
+    <h1>Welcome to Your Safe Space 🌸</h1>
+    <p>"Your mental health is just as important as your physical health."</p>
+    <div class="tagline">✨ Start your journey here ✨</div>
+  </div>
+
   <!-- Login Form -->
   <div class="login-card">
     <h2>Login</h2>
@@ -156,3 +158,4 @@
   </div>
 </body>
 </html>
+

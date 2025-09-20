@@ -1,22 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Schedule | </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Schedule | Mental Health Chatbot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #e0c4ce, #f3f9f9);
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      padding: 2rem 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 1.6rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #444;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      width: 100%;
+    }
+    button:hover {
+      background: #357abd;
+    }
+
+    .back-link {
+      margin-top: 15px;
+    }
+    .back-link a {
+      text-decoration: none;
+      color: #4a90e2;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <form action="{{ url_for('add_schedule') }}" method="POST" style="width:300px; margin:auto;">
-        <label for="task">Task:</label><br>
-        <input type="text" id="task" name="task" placeholder="Enter task" required><br><br>
 
-        <label for="date">Date:</label><br>
-        <input type="date" id="date" name="date" required><br><br>
+  <!-- Add Schedule Card -->
+  <div class="card">
+    <h2>Add New Schedule</h2>
+    <form action="{{ url_for('add_schedule') }}" method="POST">
+      <label for="task">Task:</label>
+      <input type="text" id="task" name="task" placeholder="Enter task" required>
 
-        <label for="time">Time:</label><br>
-        <input type="time" id="time" name="time" required><br><br>
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required>
 
-        <button type="submit">Done</button>
+      <label for="time">Time:</label>
+      <input type="time" id="time" name="time" required>
+
+      <button type="submit">✅ Done</button>
     </form>
+
+    <div class="back-link">
+      <a href="{{ url_for('scheduler_dashboard') }}">⬅ Back to Schedule Dashboard</a>
+    </div>
+  </div>
+
 </body>
 </html>
+

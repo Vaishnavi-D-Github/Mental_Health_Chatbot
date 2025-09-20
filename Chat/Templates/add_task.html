@@ -1,83 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Routine Task</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 500px;
-            margin: 60px auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input {
-            width: 95%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .btn {
-            width: 100%;
-            padding: 12px;
-            background: #4CAF50;
-            border: none;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background: #45a049;
-        }
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-        }
-        .back-link a {
-            text-decoration: none;
-            color: #4CAF50;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Routine Task | Mental Health Chatbot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #e0c4ce, #f3f9f9);
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      padding: 2rem 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 1.6rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #444;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      width: 100%;
+    }
+    button:hover {
+      background: #357abd;
+    }
+
+    .back-link {
+      margin-top: 15px;
+    }
+    .back-link a {
+      text-decoration: none;
+      color: #4a90e2;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Add a New Task</h2>
-        <form method="POST">
-            <label for="task">Task Name</label>
-            <input type="text" id="task" name="task" placeholder="Enter task name" required>
+  <!-- Add Routine Task Card -->
+  <div class="card">
+    <h2>Add a New Task</h2>
+    <form method="POST">
+      <label for="task">Task Name:</label>
+      <input type="text" id="task" name="task" placeholder="Enter task name" required>
 
-            <label for="time">Time</label>
-            <input type="time" id="time" name="time" required>
+      <label for="time">Time:</label>
+      <input type="time" id="time" name="time" required>
 
-            <button type="submit" class="btn">Add Task</button>
-        </form>
+      <button type="submit">➕ Add Task</button>
+    </form>
 
-        <div class="back-link">
-            <a href="{{ url_for('routine_dashboard') }}">⬅ Back to Routine Dashboard</a>
-        </div>
+    <div class="back-link">
+      <a href="{{ url_for('routine_dashboard') }}">⬅ Back to Routine Dashboard</a>
     </div>
+  </div>
 
 </body>
 </html>

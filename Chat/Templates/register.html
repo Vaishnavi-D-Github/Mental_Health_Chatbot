@@ -7,15 +7,17 @@
       margin: 0;
       font-family: 'Poppins', sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      justify-content: flex-start;
       align-items: center;
       height: 100vh;
       overflow: hidden;
       position: relative;
       background: linear-gradient(135deg, #f1ccd9, #dbefef);
+      padding-top: 60px; /* keeps content in top half */
     }
 
-   
+    /* Animated Bubbles Background */
     .bubbles {
       position: absolute;
       width: 100%;
@@ -25,55 +27,38 @@
       overflow: hidden;
       z-index: 0;
     }
-
     .bubble {
       position: absolute;
       border-radius: 50%;
       opacity: 0.4;
       animation: float 10s infinite ease-in-out;
     }
-
-    .bubble:nth-child(1) {
-      width: 160px; height: 160px;
-      background: #a3d5ff;
-      top: 20%; left: 15%;
-      animation-duration: 8s;
-    }
-    .bubble:nth-child(2) {
-      width: 200px; height: 200px;
-      background: #ffc8dd;
-      top: 60%; left: 70%;
-      animation-duration: 10s;
-    }
-    .bubble:nth-child(3) {
-      width: 130px; height: 130px;
-      background: #addfa3;
-      top: 80%; left: 30%;
-      animation-duration: 9s;
-    }
-    .bubble:nth-child(4) {
-      width: 220px; height: 220px;
-      background: #d0c570;
-      top: 35%; left: 80%;
-      animation-duration: 11s;
-    }
-    .bubble:nth-child(5) {
-      width: 150px; height: 150px;
-      background: #9f96d7;
-      top: 10%; left: 50%;
-      animation-duration: 7s;
-    }
-
-    .bubble:nth-child(6) {
-      width: 180px; height: 180px;
-      background: #dfa5da;
-      top: 45%; left: 5%;
-      animation-duration: 6s;
-    }
+    .bubble:nth-child(1) { width: 160px; height: 160px; background: #a3d5ff; top: 20%; left: 15%; animation-duration: 8s; }
+    .bubble:nth-child(2) { width: 200px; height: 200px; background: #ffc8dd; top: 60%; left: 70%; animation-duration: 10s; }
+    .bubble:nth-child(3) { width: 130px; height: 130px; background: #addfa3; top: 80%; left: 30%; animation-duration: 9s; }
+    .bubble:nth-child(4) { width: 220px; height: 220px; background: #d0c570; top: 35%; left: 80%; animation-duration: 11s; }
+    .bubble:nth-child(5) { width: 150px; height: 150px; background: #9966f7; top: 10%; left: 50%; animation-duration: 7s; }
 
     @keyframes float {
       0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-60px) scale(1.1); }
+      50% { transform: translateY(-40px) scale(1.1); }
+    }
+
+    /* Welcome Section */
+    .welcome-text {
+      text-align: center;
+      margin-bottom: 20px;
+      z-index: 1;
+    }
+    .welcome-text h1 {
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .welcome-text p {
+      font-size: 1rem;
+      color: #555;
+      font-style: italic;
     }
 
     /* Register Card */
@@ -85,14 +70,12 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       z-index: 1;
       text-align: center;
+      width: 350px;
     }
-
     .register-card h2 {
       margin-bottom: 20px;
       color: #333;
-      font-style: italic;
     }
-
     .register-card input {
       width: 100%;
       padding: 10px;
@@ -103,25 +86,48 @@
       font-size: 16px;
     }
 
+    /* Register Button (Blue) */
     .register-card button {
       width: 100%;
       padding: 12px;
       border: none;
       border-radius: 12px;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      background: linear-gradient(135deg, #1e90ff, #00bfff);
       color: #fff;
       font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
       transition: 0.3s ease;
     }
-
     .register-card button:hover {
       transform: scale(1.05);
+      background: linear-gradient(135deg, #0077ff, #00a4e4);
     }
 
     .register-card p {
       margin-top: 10px;
       font-size: 14px;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #666;
+      font-style: italic;
+    }
+
+    .privacy-link {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #0077cc;
+    }
+    .privacy-link a {
+      color: #0077cc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .privacy-link a:hover {
+      text-decoration: underline;
     }
 
     .error {
@@ -131,9 +137,8 @@
   </style>
 </head>
 <body>
-  
+  <!-- Animated Bubbles Background -->
   <div class="bubbles">
-    <div class="bubble"></div>
     <div class="bubble"></div>
     <div class="bubble"></div>
     <div class="bubble"></div>
@@ -141,18 +146,38 @@
     <div class="bubble"></div>
   </div>
 
-  <!-- Register Card -->
+  <!-- Welcome Message -->
+  <div class="welcome-text">
+    <h1>Create Your Account ✨</h1>
+    <p>“Every small step is a part of your healing journey.”</p>
+  </div>
+
+  <!-- Register Form -->
   <div class="register-card">
-    <h2>Create Account</h2>
+    <h2>Register</h2>
     <form method="POST">
       <input type="text" name="username" placeholder="Username" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="tel" name="emergency_contact" placeholder="Emergency Contact Number" pattern="[0-9]{10}" required>
       <input type="password" name="password" placeholder="Password" required>
-      <button type="submit">Register</button>
+      <button type="submit">Sign Up</button>
     </form>
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+    
+    <!-- Note about redirect -->
+    <div class="note">
+      This will redirect you to the login page after successful registration.  
+      Please log in again to continue your journey 🌱
+    </div>
+
+    <!-- Privacy Policy Link -->
+    <div class="privacy-link">
+      By signing up, you agree to our <a href="{{ url_for('privacy') }}">Privacy Policy</a>.
+    </div>
+
     {% if error %}
       <div class="error">{{ error }}</div>
     {% endif %}
-    <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
   </div>
 </body>
 </html>

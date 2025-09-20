@@ -13,7 +13,7 @@ def call_ollama(prompt, model="llama3.2"):
         "model": model,
         "prompt": prompt,
         "stream": False,
-        "options": {"temperature": 0.7, "num_predict": 200}
+        "options": {"temperature": 0.3, "num_predict": 80}
     }
     r = requests.post(url, json=payload, timeout=120)
     r.raise_for_status()

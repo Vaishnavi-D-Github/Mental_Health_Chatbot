@@ -1,63 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Habit | Mental Health Chatbot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            text-align: center;
-        }
-        form {
-            width: 300px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background: #f9f9f9;
-        }
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-        input[type="text"] {
-            width: 90%;
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 15px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #45a049;
-        }
-        .back {
-            display: block;
-            margin-top: 15px;
-            text-decoration: none;
-            color: #333;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Habit | Mental Health Chatbot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #e0c4ce, #f3f9f9);
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      padding: 2rem 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 1.6rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #444;
+      text-align: left;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      width: 100%;
+    }
+    button:hover {
+      background: #357abd;
+    }
+
+    .back-link {
+      margin-top: 15px;
+    }
+    .back-link a {
+      text-decoration: none;
+      color: #4a90e2;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Add Habit Card -->
+  <div class="card">
     <h2>Add a New Habit</h2>
     <form action="{{ url_for('add_habit') }}" method="POST">
-        <label for="habit">Habit</label>
-        <input type="text" id="habit" name="habit" placeholder="Enter your habit" required>
+      <label for="habit">Habit</label>
+      <input type="text" id="habit" name="habit" placeholder="Enter your habit" required>
 
-        <button type="submit">Add Habit</button>
+      <button type="submit">➕ Add Habit</button>
     </form>
-    <a class="back" href="{{ url_for('habit_dashboard') }}">⬅ Back to Habits</a>
+
+    <div class="back-link">
+      <a href="{{ url_for('habit_dashboard') }}">⬅ Back to Habits</a>
+    </div>
+  </div>
+
 </body>
 </html>
+
+
+

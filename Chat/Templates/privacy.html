@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Privacy Policy | Mental Health Chatbot</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: linear-gradient(135deg, #f6f9fc, #e0c4ce);
+      color: #333;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      color: #4a90e2;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-top: 25px;
+    }
+
+    p {
+      margin: 12px 0;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+    }
+
+    a {
+      color: #4a90e2;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+  <!-- Home Button -->
+  <div style="text-align: right; margin-bottom: 20px;">
+    <form action="{{ url_for('register') }}" method="get" style="display:inline;">
+      <button type="submit" style="
+        padding: 8px 16px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #1e90ff, #00bfff);
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s ease;
+      ">Home</button>
+    </form>
+  </div>
+    <h1>Privacy Policy</h1>
+
+    <p>Your privacy is very important to us. This Mental Health Chatbot project is designed to help users track habits, manage routines, schedule tasks, and have supportive conversations. Since these interactions may include sensitive personal details, we are committed to protecting your data.</p>
+
+    <h2>1. Information We Collect</h2>
+    <p>- Account information: username and password (encrypted).</p>
+    <p>- User input: chatbot conversations, habits, routines, and schedules you add.</p>
+    <p>- Technical data: session cookies used to keep you logged in.</p>
+
+    <h2>2. How We Use Your Data</h2>
+    <p>- To provide chatbot responses tailored to your input.</p>
+    <p>- To store your schedules, habits, and routines so you can track progress.</p>
+    <p>- To improve user experience with reminders and insights.</p>
+    <p>- We <strong>do not</strong> use your data for advertising or share it with third parties.</p>
+
+    <h2>3. Data Security</h2>
+    <p>- All passwords are encrypted using industry-standard hashing.</p>
+    <p>- Conversations and personal details are stored securely in MongoDB.</p>
+    <p>- Access to data is restricted and requires an admin key.</p>
+
+    <h2>4. Your Rights</h2>
+    <p>- You can request deletion of your account and all associated data.</p>
+    <p>- You may choose not to share personal details in the chatbot.</p>
+
+    <h2>5. Disclaimer</h2>
+    <p>- This chatbot is <strong>not a medical professional</strong>. It provides general emotional support and self-help guidance.</p>
+    <p>- If you are experiencing severe emotional distress or suicidal thoughts, please contact a licensed mental health professional or local emergency services immediately.</p>
+
+    <h2>6. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Users will be notified of major changes through the website.</p>
+
+    <div class="footer">
+      <p>Need help? <a href="{{ url_for('chatbot') }}">Chat with us</a></p>
+      <p>&copy; 2025 Mental Health Chatbot. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

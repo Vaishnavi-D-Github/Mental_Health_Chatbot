@@ -3,9 +3,12 @@ from flask_bcrypt import Bcrypt
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import requests
+
+from datetime import datetime
 from datetime import datetime
 import os, secrets, json, re
-from llama_client import call_ollama   # your function that calls LLaMA
+from llama_client import call_ollama
+from llama_chat import get_llama_response   # your function that calls LLaMA
 
 # ---------------- Flask App ----------------
 app = Flask(__name__)
@@ -13,7 +16,7 @@ app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 bcrypt = Bcrypt(app)
 
 # ---------------- MongoDB ----------------
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://localhost:27017")
 db = client["Mental_Health_Assist"]
 
 users = db["Users"]
@@ -21,6 +24,8 @@ schedules_collection = db["Scheduler"]
 habits_collection = db["Habits"]
 habit_logs = db["HabitLogs"]
 routine_tasks = db["routine_tasks"]
+advice_collection = db["Advice"]
+
 
 # ---------------- Chatbot Setup ----------------
 with open("mental_responses.json", "r", encoding="utf-8") as f:
@@ -56,6 +61,24 @@ def match_pattern(user_text):
 @app.route("/")
 def home():
     return render_template("Homepage.html")
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+def get_user_context(user_id):
+    habits = list(habits_collection.find({"user_id": ObjectId(user_id)}))
+    routines = list(routine_tasks.find({"user_id": ObjectId(user_id)}))
+    schedules = list(schedules_collection.find({"user_id": ObjectId(user_id)}))
+    
+    # Optionally, fetch recent conversations
+    conversation_history = CONVERSATIONS.get(user_id, [])
+    
+    return {
+        "habits": habits,
+        "routines": routines,
+        "schedules": schedules,
+        "recent_chats": conversation_history
+    }
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -64,13 +87,15 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        email = request.form["email"]
+        emergency_contact = request.form["emergency_contact"]
 
         if users.find_one({"username": username}):
             error = "Username already exists!"
             return redirect(url_for("register"))
 
         hashed_pw = bcrypt.generate_password_hash(password).decode("utf-8")
-        users.insert_one({"username": username, "password": hashed_pw})
+        users.insert_one({"username": username, "password": hashed_pw,"email":email,"emergency_contact": emergency_contact})
         return redirect(url_for("login"))
 
     return render_template("register.html", error=error)
@@ -96,8 +121,27 @@ def login():
 @app.route("/dashboard")
 def dashboard():
     if "username" in session:
-        return render_template("dashboard.html", username=session["username"])
+        user_id = ObjectId(session["user_id"])
+        
+        # Fetch pending/missed items
+        routines = list(routine_tasks.find({"user_id": user_id, "completed": False}))
+        habits = list(habits_collection.find({"user_id": user_id, "temp_checked": False}))
+        schedules = list(schedules_collection.find({"status": "pending"}))
+        
+        # Prepare reminder messages
+        reminders = []
+        if routines:
+            reminders.append(f"You have {len(routines)} routine tasks pending today!")
+        if habits:
+            reminders.append(f"You have {len(habits)} habits to complete today!")
+        if schedules:
+            reminders.append(f"You have {len(schedules)} scheduled tasks pending!")
+        
+        return render_template("dashboard.html", 
+                               username=session["username"], 
+                               reminders=reminders)
     return redirect(url_for("login"))
+
 
 
 @app.route("/logout")
@@ -301,35 +345,53 @@ def chatbot():
     return redirect(url_for("login"))
 
 
+
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.json
-    session_id = data.get("session_id", session.get("user_id", "anon"))
-    user_text = data.get("message", "")
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"reply": "Please log in to chat.", "tag": "", "source": "system"})
 
-    # Scripted crisis handling
+    conversation_id = user_id
+    user_text = request.json.get("message", "")
+
+    # Scripted pattern handling
     tag, responses = match_pattern(user_text)
     if tag == "suicidal":
         return jsonify({"reply": responses[0], "tag": tag, "source": "scripted"})
 
-    # Track conversation
-    if session_id not in CONVERSATIONS:
-        CONVERSATIONS[session_id] = []
-    CONVERSATIONS[session_id].append({"role": "user", "content": user_text})
+    # ---------------- Personalized Advice ----------------
+    # Fetch user context
+    user_context = {
+        "habits": list(habits_collection.find({"user_id": ObjectId(user_id)})),
+        "routines": list(routine_tasks.find({"user_id": ObjectId(user_id)})),
+        "schedules": list(schedules_collection.find({"user_id": ObjectId(user_id)})),
+        "recent_chats": CONVERSATIONS.get(user_id, [])
+    }
 
-    convo_text = "".join(
-        f"{msg['role'].capitalize()}: {msg['content']}\n"
-        for msg in CONVERSATIONS[session_id][-6:]
-    )
-    prompt = f"{SYSTEM_PROMPT}\n{convo_text}Assistant:"
+    # Create system prompt for LLaMA
+    system_prompt = f"""
+    You are a compassionate mental health chatbot.
+    The user has the following context:
+    Habits: {user_context['habits']}
+    Routines: {user_context['routines']}
+    Schedules: {user_context['schedules']}
+    Recent chats: {user_context['recent_chats']}
+    Provide personalized advice or coping strategies based on this information.
+    """
 
-    try:
-        reply = call_ollama(prompt)
-    except Exception as e:
-        print("ERROR:", e)  # log the actual error
-        reply = "Sorry, I'm having trouble right now. Can we try again later?"
+    # Get LLaMA reply with persistent memory and personalized advice
+    reply = get_llama_response(user_id, conversation_id, user_text, system_prompt=system_prompt)
 
-    CONVERSATIONS[session_id].append({"role": "assistant", "content": reply})
+    # Store the advice in MongoDB for reference
+    advice_collection.insert_one({
+        "user_id": ObjectId(user_id),
+        "date": datetime.now(),
+        "user_input": user_text,
+        "advice": reply
+    })
+    # ------------------------------------------------------
+
     return jsonify({"reply": reply, "tag": tag or "", "source": "llama"})
 
 # ---------------- Main ----------------

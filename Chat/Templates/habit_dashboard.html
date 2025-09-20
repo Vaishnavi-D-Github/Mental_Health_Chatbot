@@ -1,40 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Habit Dashboard</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f8f9fa; padding: 20px; }
-        h2 { color: #333; }
-        .habit-card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        form { display: inline-block; }
-        button { background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #c82333; }
-        .add-btn { display: block; margin-top: 20px; text-decoration: none; background: #007bff; color: white; padding: 10px; border-radius: 5px; }
-        .add-btn:hover { background: #0056b3; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Habit Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #e0c4ce, #f3f9f9);
+    }
+
+    /* Bubbles background */
+    .bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.35;
+      animation: float 10s infinite ease-in-out;
+    }
+    .bubble:nth-child(1) { width: 180px; height: 180px; background: #98c4e9; top: 20%; left: 15%; animation-duration: 6s; }
+    .bubble:nth-child(2) { width: 220px; height: 220px; background: #d69bb2; top: 60%; left: 70%; animation-duration: 8s; }
+    .bubble:nth-child(3) { width: 140px; height: 140px; background: #a2d9da; top: 80%; left: 30%; animation-duration: 9s; }
+    .bubble:nth-child(4) { width: 250px; height: 250px; background: #d1d395; top: 35%; left: 80%; animation-duration: 8s; }
+    .bubble:nth-child(5) { width: 160px; height: 160px; background: #b4abeb; top: 10%; left: 50%; animation-duration: 10s; }
+    .bubble:nth-child(6) { width: 180px; height: 180px; background: #d18dcb; top: 45%; left: 5%; animation-duration: 5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-40px) scale(1.1); }
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: flex-end;
+      z-index: 2;
+    }
+    .navbar a {
+      text-decoration: none;
+    }
+    .home-btn {
+      background: #4a90e2;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+    .home-btn:hover { background: #357abd; }
+
+    /* Habit Card Container */
+    .habit-card-container {
+      position: relative;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem 3rem;
+      border-radius: 25px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+      z-index: 1;
+      width: 90%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    /* Habit List */
+    .habit-list {
+      width: 100%;
+      margin: auto;
+      border-collapse: collapse;
+    }
+    .habit-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      margin-bottom: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+    .habit-name {
+      font-size: 16px;
+      color: #333;
+    }
+    .streak {
+      color: #4a90e2;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.3);
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: 0.3s ease;
+    }
+    .btn:hover { background: #357abd; }
+    .btn-delete { background: #e74c3c; }
+    .btn-delete:hover { background: #c0392b; }
+
+    .add-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: #4a90e2;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+    .add-btn:hover { background: #357abd; }
+
+    p {
+      font-size: 15px;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Bubbles Background -->
+  <div class="bubbles">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="{{ url_for('dashboard') }}"><div class="home-btn">🏠 Home</div></a>
+  </div>
+
+  <!-- Habit Card Container -->
+  <div class="habit-card-container">
     <h2>Your Habits</h2>
 
     {% if habits %}
+      <div class="habit-list">
         {% for habit in habits %}
-            <div class="habit-card">
-                <form action="{{ url_for('update_habit', habit_id=habit['_id']) }}" method="POST">
-                    <input type="checkbox" name="completed" 
-                    onchange="this.form.submit()"
-                    {% if habit.temp_checked %}checked{% endif %}>
-                    {{ habit.habit }} (Streak: {{ habit.streak }})
-                </form>
-                <form action="{{ url_for('delete_habit', habit_id=habit['_id']) }}" method="POST" style="margin-left:10px;">
-                    <button type="submit">Delete</button>
-                </form>
-            </div>
+          <div class="habit-item">
+            <form action="{{ url_for('update_habit', habit_id=habit['_id']) }}" method="POST" style="flex:1; text-align:left;">
+              <input type="checkbox" name="completed" onchange="this.form.submit()" 
+                {% if habit.temp_checked %}checked{% endif %}>
+              <span class="habit-name">{{ habit.habit }}</span>
+              <span class="streak">(Streak: {{ habit.streak }})</span>
+            </form>
+            <form action="{{ url_for('delete_habit', habit_id=habit['_id']) }}" method="POST">
+              <button class="btn btn-delete" type="submit">🗑 Delete</button>
+            </form>
+          </div>
         {% endfor %}
+      </div>
     {% else %}
-        <p>No habits added yet.</p>
+      <p>No habits added yet.</p>
     {% endif %}
 
-    <a class="add-btn" href="{{ url_for('add_habit') }}">Add Habit</a>
+    <a class="add-btn" href="{{ url_for('add_habit') }}">➕ Add Habit</a>
+  </div>
+
 </body>
 </html>
